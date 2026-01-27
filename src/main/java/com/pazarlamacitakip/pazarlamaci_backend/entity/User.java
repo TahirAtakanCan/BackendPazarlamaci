@@ -1,9 +1,9 @@
 package com.pazarlamacitakip.pazarlamaci_backend.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
@@ -17,15 +17,13 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "UUID")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "adi")
+    @Column(name = "adi", nullable = false)
     private String adi;
 
-    @Column(name = "sifre")
+    @Column(name = "sifre", nullable = false)
     private String sifre;
 
     @Column(name = "telefon")
@@ -34,33 +32,39 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "aciklama")
-    private String aciklama;
-
-    @Column(name = "aciklama2")
-    private String aciklama2;
-
     @Column(name = "adminmi")
     private Boolean adminmi = false;
 
     @Column(name = "aktifmi")
     private Boolean aktifmi = true;
 
+    // --- Mobil & Web Ortak Alanlar ---
+    @Column(name = "aciklama")
+    private String aciklama;
+
+    @Column(name = "aciklama2")
+    private String aciklama2;
+
     @Column(name = "sirketkodu")
     private String sirketkodu;
 
+    @Column(name = "yetki") // supervisor, manager vs.
+    private String yetki;
+
+    @Column(name = "bolge")
+    private String bolge;
+
+    @Column(name = "yer") // Lokasyon tanımı
+    private String yer;
+
+    // --- Araç Bilgileri ---
     @Column(name = "plaka")
     private String plaka;
 
-    @Column(name = "km")
-    private Double km;
+    @Column(name = "km") // Aracın o anki kilometresi (String olarak saklanmış mobilde)
+    private String km;
 
-    @Column(name = "yer")
-    private String yer;
-
-    @Column(name = "yetki")
-    private String yetki;
-
+    // --- Hedef ve Performans Metrikleri ---
     @Column(name = "aylik_hedef")
     private Double aylikHedef;
 
@@ -70,15 +74,12 @@ public class User {
     @Column(name = "hedef_ziyaret_sayisi")
     private Integer hedefZiyaretSayisi;
 
-    @Column(name = "bolge")
-    private String bolge;
-
-    @Column(name = "son_giris_tarihi")
-    private LocalDateTime sonGirisTarihi;
-
     @Column(name = "gec_tahsilat")
     private Double gecTahsilat;
 
     @Column(name = "gec_tahsilat_guncelleme_tarihi")
     private LocalDateTime gecTahsilatGuncellemeTarihi;
+
+    @Column(name = "son_giris_tarihi")
+    private LocalDateTime sonGirisTarihi;
 }
