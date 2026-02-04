@@ -10,6 +10,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -44,8 +45,7 @@ public class ApplicationConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Şimdilik düz metin (NoOp) kullanıyoruz çünkü veritabanındaki şifreler "12345" gibi düz.
-        // İleride burayı new BCryptPasswordEncoder() yapacağız.
-        return org.springframework.security.crypto.password.NoOpPasswordEncoder.getInstance();
+        // BCrypt ile şifreleme - Güvenli!
+        return new BCryptPasswordEncoder();
     }
 }
