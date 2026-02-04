@@ -28,6 +28,30 @@ public class Firma {
     
     @Column(name = "adres")
     private String adres;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "sektor")
+    private String sektor;
+
+    @Column(name = "sehir")
+    private String sehir;
+
+    @Column(name = "ilce")
+    private String ilce;
+
+    @Column(name = "bakiye")
+    private Double bakiye;
+
+    @Column(name = "aciklama")
+    private String aciklama;
+
+    @Column(name = "sirketkodu")
+    private String sirketkodu;
+
+    @Column(name = "aktifmi")
+    private Boolean aktifmi = true;
     
     @Column(name = "vergidairesi")
     private String vergidairesi;
@@ -35,7 +59,7 @@ public class Firma {
     @Column(name = "vergino")
     private String vergino;
     
-    @Column(name = "not")
+    @Column(name = "\"not\"")
     private String not;
     
     @Column(name = "sonziyarettarihi")
