@@ -17,6 +17,11 @@ public class JobController {
 
     private final JobService jobService;
 
+    @GetMapping
+    public ResponseEntity<List<JobResponse>> getAllJobs() {
+        return ResponseEntity.ok(jobService.getAllJobs());
+    }
+
     @PostMapping
     public ResponseEntity<JobResponse> createJob(@RequestBody JobSaveRequest request) {
         return ResponseEntity.ok(jobService.createJob(request));

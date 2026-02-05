@@ -60,6 +60,12 @@ public class JobService {
         return mapToResponse(savedJob);
     }
 
+    public List<JobResponse> getAllJobs() {
+        return jobRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     public List<JobResponse> getJobsByPersonel(UUID personelId) {
         return jobRepository.findByPersonelId(personelId).stream()
                 .map(this::mapToResponse)
