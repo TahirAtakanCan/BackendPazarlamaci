@@ -31,6 +31,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**").permitAll() // Test için açık
                         .requestMatchers("/api/task-defs/**").permitAll() // Test için açık
                         .requestMatchers("/api/ishar/**").permitAll() // Test için açık
+                        .requestMatchers("/api/harcamalar/**").permitAll() // Test için açık
+                        .requestMatchers("/api/konum/**").permitAll() // Test için açık
+                        .requestMatchers("/api/notes/**").permitAll() // Test için açık
                         .anyRequest().authenticated() // Diğer her yer token ister
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
