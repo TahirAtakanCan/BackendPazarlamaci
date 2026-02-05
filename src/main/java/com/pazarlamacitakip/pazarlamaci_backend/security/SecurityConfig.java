@@ -25,6 +25,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Login herkese açık
+                        .requestMatchers("/api/yetkililer/**").permitAll() // Test için açık
+                        .requestMatchers("/api/jobs/**").permitAll() // Test için açık
+                        .requestMatchers("/api/firmalar/**").permitAll() // Test için açık
+                        .requestMatchers("/api/users/**").permitAll() // Test için açık
                         .anyRequest().authenticated() // Diğer her yer token ister
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -19,8 +18,9 @@ public class Yetkili {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     
-    @Column(name = "firmaid", nullable = false)
-    private UUID firmaid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "firmaid", nullable = false)
+    private Firma firma;
     
     @Column(name = "adi", nullable = false)
     private String adi;
@@ -34,7 +34,12 @@ public class Yetkili {
     @Column(name = "email")
     private String email;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "firmaid", insertable = false, updatable = false)
-    private Firma firma;
+    @Column(name = "unvan")
+    private String unvan;
+    
+    @Column(name = "aciklama")
+    private String aciklama;
+    
+    @Column(name = "aktifmi")
+    private Boolean aktifmi = true;
 }
