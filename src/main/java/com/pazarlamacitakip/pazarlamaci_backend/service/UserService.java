@@ -58,7 +58,24 @@ public class UserService {
         response.setYetki(user.getYetki());
         response.setBolge(user.getBolge());
         response.setAdminmi(user.getAdminmi());
+        response.setAktifmi(user.getAktifmi());
         response.setSirketkodu(user.getSirketkodu());
         return response;
+    }
+
+    // Kullanıcı Sil
+    public void deleteUser(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı: " + id));
+        userRepository.delete(user);
+    }
+
+    // Kullanıcı Aktif/Pasif Toggle
+    public UserResponse toggleActive(UUID id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı: " + id));
+        user.setAktifmi(!Boolean.TRUE.equals(user.getAktifmi()));
+        User saved = userRepository.save(user);
+        return mapToResponse(saved);
     }
 }

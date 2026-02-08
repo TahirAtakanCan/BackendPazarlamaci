@@ -58,6 +58,25 @@ public class IsharService {
                 .collect(Collectors.toList());
     }
 
+    public IsharResponse updateIshar(UUID id, com.pazarlamacitakip.pazarlamaci_backend.dto.request.IsharUpdateRequest request) {
+        Ishar ishar = isharRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("İşhar bulunamadı: " + id));
+
+        if (request.getDurum() != null) {
+            ishar.setDurum(request.getDurum());
+        }
+        if (request.getTahsilTutari() != null) {
+            ishar.setTahsilTutari(request.getTahsilTutari());
+        }
+        if (request.getGorevNotu() != null) {
+            ishar.setGorevNotu(request.getGorevNotu());
+        }
+        ishar.setDuzenlenmeTarihi(LocalDateTime.now());
+
+        Ishar updated = isharRepository.save(ishar);
+        return mapToResponse(updated);
+    }
+
     private IsharResponse mapToResponse(Ishar ishar) {
         return IsharResponse.builder()
                 .id(ishar.getId())

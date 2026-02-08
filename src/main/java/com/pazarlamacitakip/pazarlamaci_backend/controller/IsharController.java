@@ -1,6 +1,7 @@
 package com.pazarlamacitakip.pazarlamaci_backend.controller;
 
 import com.pazarlamacitakip.pazarlamaci_backend.dto.request.IsharSaveRequest;
+import com.pazarlamacitakip.pazarlamaci_backend.dto.request.IsharUpdateRequest;
 import com.pazarlamacitakip.pazarlamaci_backend.dto.response.IsharResponse;
 import com.pazarlamacitakip.pazarlamaci_backend.service.IsharService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,11 @@ public class IsharController {
     @PostMapping
     public ResponseEntity<IsharResponse> create(@RequestBody IsharSaveRequest request) {
         return ResponseEntity.ok(isharService.createIshar(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<IsharResponse> updateIshar(@PathVariable UUID id, @RequestBody IsharUpdateRequest request) {
+        return ResponseEntity.ok(isharService.updateIshar(id, request));
     }
 
     @GetMapping("/job/{jobId}")

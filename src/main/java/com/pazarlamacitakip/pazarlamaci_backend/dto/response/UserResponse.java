@@ -12,6 +12,7 @@ public class UserResponse {
     private String yetki;
     private String bolge;
     private Boolean adminmi;
+    private Boolean aktifmi;
     private String sirketkodu;
     // Şifre burada YOK!
 }

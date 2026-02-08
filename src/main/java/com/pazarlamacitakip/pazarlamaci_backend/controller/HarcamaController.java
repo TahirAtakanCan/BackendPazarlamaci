@@ -26,4 +26,9 @@ public class HarcamaController {
     public ResponseEntity<List<HarcamaResponse>> getByPersonel(@PathVariable UUID personelId) {
         return ResponseEntity.ok(harcamaService.getByPersonel(personelId));
     }
+
+    @GetMapping("/is/{isId}")
+    public ResponseEntity<List<HarcamaResponse>> getByIsId(@PathVariable UUID isId) {
+        return ResponseEntity.ok(harcamaService.getByIsId(isId));
+    }
 }

@@ -1,6 +1,8 @@
 package com.pazarlamacitakip.pazarlamaci_backend.controller;
 
 import com.pazarlamacitakip.pazarlamaci_backend.dto.request.NoteSaveRequest;
+import com.pazarlamacitakip.pazarlamaci_backend.dto.request.NoteUpdateRequest;
+import com.pazarlamacitakip.pazarlamaci_backend.dto.response.NoteResponse;
 import com.pazarlamacitakip.pazarlamaci_backend.entity.Note;
 import com.pazarlamacitakip.pazarlamaci_backend.service.NoteService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,11 @@ public class NoteController {
     @PostMapping
     public ResponseEntity<Note> create(@RequestBody NoteSaveRequest request) {
         return ResponseEntity.ok(noteService.createNote(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<NoteResponse> updateNote(@PathVariable UUID id, @RequestBody NoteUpdateRequest request) {
+        return ResponseEntity.ok(noteService.updateNote(id, request));
     }
 
     @GetMapping("/firma/{firmaId}")

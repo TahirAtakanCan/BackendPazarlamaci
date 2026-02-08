@@ -1,6 +1,8 @@
 package com.pazarlamacitakip.pazarlamaci_backend.service;
 
 import com.pazarlamacitakip.pazarlamaci_backend.dto.request.NoteSaveRequest;
+import com.pazarlamacitakip.pazarlamaci_backend.dto.request.NoteUpdateRequest;
+import com.pazarlamacitakip.pazarlamaci_backend.dto.response.NoteResponse;
 import com.pazarlamacitakip.pazarlamaci_backend.entity.Note;
 import com.pazarlamacitakip.pazarlamaci_backend.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +41,33 @@ public class NoteService {
     
     public List<Note> getNotesByJob(UUID jobId) {
         return noteRepository.findByGorevId(jobId);
+    }
+
+    public NoteResponse updateNote(UUID id, NoteUpdateRequest request) {
+        Note note = noteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Not bulunamadı: " + id));
+
+        if (request.getNotMetni() != null) {
+            note.setNotMetni(request.getNotMetni());
+        }
+
+        Note updated = noteRepository.save(note);
+        return mapToResponse(updated);
+    }
+
+    private NoteResponse mapToResponse(Note note) {
+        return NoteResponse.builder()
+                .id(note.getId())
+                .gorevId(note.getGorevId())
+                .isharId(note.getIsharId())
+                .firmaId(note.getFirmaId())
+                .personelId(note.getPersonelId())
+                .personelAdi(note.getPersonelAdi())
+                .personelTipi(note.getPersonelTipi())
+                .gorevAdi(note.getGorevAdi())
+                .notMetni(note.getNotMetni())
+                .icNot(note.getIcNot())
+                .olusturulmaTarihi(note.getOlusturulmaTarihi())
+                .build();
     }
 }

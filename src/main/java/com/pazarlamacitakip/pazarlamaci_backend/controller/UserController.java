@@ -31,4 +31,15 @@ public class UserController {
     public ResponseEntity<UserResponse> createUser(@RequestBody UserSaveRequest request) {
         return ResponseEntity.ok(userService.createUser(request));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/toggle-active")
+    public ResponseEntity<UserResponse> toggleActive(@PathVariable UUID id) {
+        return ResponseEntity.ok(userService.toggleActive(id));
+    }
 }

@@ -41,6 +41,12 @@ public class HarcamaService {
                 .collect(Collectors.toList());
     }
 
+    public List<HarcamaResponse> getByIsId(UUID isId) {
+        return harcamaRepository.findByIsId(isId).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     private HarcamaResponse mapToResponse(Harcama h) {
         return HarcamaResponse.builder()
                 .id(h.getId())

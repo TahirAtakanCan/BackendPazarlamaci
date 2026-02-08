@@ -1,6 +1,7 @@
 package com.pazarlamacitakip.pazarlamaci_backend.controller;
 
 import com.pazarlamacitakip.pazarlamaci_backend.dto.request.JobSaveRequest;
+import com.pazarlamacitakip.pazarlamaci_backend.dto.request.JobUpdateRequest;
 import com.pazarlamacitakip.pazarlamaci_backend.dto.response.JobResponse;
 import com.pazarlamacitakip.pazarlamaci_backend.service.JobService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,11 @@ public class JobController {
     @PostMapping
     public ResponseEntity<JobResponse> createJob(@RequestBody JobSaveRequest request) {
         return ResponseEntity.ok(jobService.createJob(request));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<JobResponse> updateJob(@PathVariable UUID id, @RequestBody JobUpdateRequest request) {
+        return ResponseEntity.ok(jobService.updateJob(id, request));
     }
 
     @GetMapping("/personel/{personelId}")

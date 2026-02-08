@@ -16,4 +16,5 @@ public class JobResponse {
     private String oncelik;
     private Integer durum;     // 0: Beklemede
     private LocalDateTime tarih;
+    private LocalDateTime tamamlanmaTarihi;
 }

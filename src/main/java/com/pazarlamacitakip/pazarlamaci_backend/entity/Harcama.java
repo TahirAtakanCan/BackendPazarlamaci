@@ -23,6 +23,9 @@ public class Harcama {
     @Column(name = "personel_id")
     private UUID personelId;
 
+    @Column(name = "is_id")
+    private UUID isId;
+
     @Column(name = "tutar")
     private Double tutar;
 

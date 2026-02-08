@@ -72,6 +72,21 @@ public class JobService {
                 .collect(Collectors.toList());
     }
 
+    public JobResponse updateJob(UUID id, com.pazarlamacitakip.pazarlamaci_backend.dto.request.JobUpdateRequest request) {
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Job bulunamadı: " + id));
+
+        if (request.getDurum() != null) {
+            job.setDurum(request.getDurum());
+        }
+        if (request.getTamamlanmaTarihi() != null) {
+            job.setTamamlanmaTarihi(request.getTamamlanmaTarihi());
+        }
+
+        Job updatedJob = jobRepository.save(job);
+        return mapToResponse(updatedJob);
+    }
+
     private JobResponse mapToResponse(Job job) {
         return JobResponse.builder()
                 .id(job.getId())
@@ -82,6 +97,7 @@ public class JobService {
                 .oncelik(job.getOncelik())
                 .durum(job.getDurum())
                 .tarih(job.getTarih())
+                .tamamlanmaTarihi(job.getTamamlanmaTarihi())
                 .build();
     }
 }
