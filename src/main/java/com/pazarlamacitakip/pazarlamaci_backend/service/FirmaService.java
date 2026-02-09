@@ -4,6 +4,7 @@ import com.pazarlamacitakip.pazarlamaci_backend.dto.request.FirmaSaveRequest;
 import com.pazarlamacitakip.pazarlamaci_backend.dto.response.FirmaResponse;
 import com.pazarlamacitakip.pazarlamaci_backend.entity.Firma;
 import com.pazarlamacitakip.pazarlamaci_backend.repository.FirmaRepository;
+import com.pazarlamacitakip.pazarlamaci_backend.repository.YetkiliRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class FirmaService {
 
     private final FirmaRepository firmaRepository;
+    private final YetkiliRepository yetkiliRepository;
 
     // Tüm Firmaları Getir
     public List<FirmaResponse> getAllFirmas() {
@@ -50,12 +52,13 @@ public class FirmaService {
         return mapToResponse(savedFirma);
     }
 
-    // Firma Sil (Soft Delete - Aktifmi false yapıyoruz)
+    // Firma Sil (Hard Delete - İlişkili yetkilileri de siler)
     public void deleteFirma(UUID id) {
         Firma firma = firmaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Firma bulunamadı"));
-        firma.setAktifmi(false); // Veriyi silme, pasife çek
-        firmaRepository.save(firma);
+        // Önce firmaya bağlı yetkilileri sil
+        yetkiliRepository.deleteAll(yetkiliRepository.findByFirmaId(id));
+        firmaRepository.delete(firma);
     }
 
     // Yardımcı Metot: Entity -> DTO Çevirici

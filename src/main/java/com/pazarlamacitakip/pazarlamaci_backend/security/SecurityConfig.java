@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/notes/**").permitAll() // Test için açık
                         .requestMatchers("/api/tahsilatlar/**").permitAll() // Test için açık
                         .requestMatchers("/api/files/**").permitAll() // Dosya yükleme/indirme
+                        .requestMatchers("/api/admin/**").permitAll() // Admin/Geliştirici paneli
                         .anyRequest().authenticated() // Diğer her yer token ister
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -46,6 +46,13 @@ public class YetkiliService {
         return mapToResponse(savedYetkili);
     }
 
+    // Yetkili Sil (Hard Delete)
+    public void deleteYetkili(UUID id) {
+        Yetkili yetkili = yetkiliRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Yetkili bulunamadı: " + id));
+        yetkiliRepository.delete(yetkili);
+    }
+
     private YetkiliResponse mapToResponse(Yetkili yetkili) {
         return YetkiliResponse.builder()
                 .id(yetkili.getId())

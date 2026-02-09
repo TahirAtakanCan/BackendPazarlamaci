@@ -26,4 +26,10 @@ public class YetkiliController {
     public ResponseEntity<YetkiliResponse> createYetkili(@RequestBody YetkiliSaveRequest request) {
         return ResponseEntity.ok(yetkiliService.createYetkili(request));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteYetkili(@PathVariable UUID id) {
+        yetkiliService.deleteYetkili(id);
+        return ResponseEntity.ok().build();
+    }
 }
