@@ -26,6 +26,13 @@ public class FirmaService {
                 .collect(Collectors.toList());
     }
 
+    // Şirket koduna göre firmaları getir (Yönetici için)
+    public List<FirmaResponse> getFirmasBySirketkodu(String sirketkodu) {
+        return firmaRepository.findBySirketkodu(sirketkodu).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     // ID ile Firma Getir
     public FirmaResponse getFirmaById(UUID id) {
         Firma firma = firmaRepository.findById(id)

@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -50,9 +53,22 @@ public class AuthController {
 
         // Token üret ve döndür
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-        String token = jwtService.generateToken(userDetails);
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("sirketkodu", user.getSirketkodu());
+        extraClaims.put("adminmi", user.getAdminmi());
+        extraClaims.put("yetki", user.getYetki());
+        extraClaims.put("userId", user.getId().toString());
+        String token = jwtService.generateToken(extraClaims, userDetails);
 
-        return ResponseEntity.ok(AuthResponse.builder().token(token).build());
+        return ResponseEntity.ok(AuthResponse.builder()
+                .token(token)
+                .userId(user.getId())
+                .adi(user.getAdi())
+                .email(user.getEmail())
+                .sirketkodu(user.getSirketkodu())
+                .adminmi(user.getAdminmi())
+                .yetki(user.getYetki())
+                .build());
     }
 
     @PostMapping("/login")
@@ -62,8 +78,27 @@ public class AuthController {
         );
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        String token = jwtService.generateToken(userDetails);
         
-        return ResponseEntity.ok(AuthResponse.builder().token(token).build());
+        // Kullanıcı bilgilerini al
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
+        
+        // JWT'ye extra bilgiler ekle
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("sirketkodu", user.getSirketkodu());
+        extraClaims.put("adminmi", user.getAdminmi());
+        extraClaims.put("yetki", user.getYetki());
+        extraClaims.put("userId", user.getId().toString());
+        String token = jwtService.generateToken(extraClaims, userDetails);
+        
+        return ResponseEntity.ok(AuthResponse.builder()
+                .token(token)
+                .userId(user.getId())
+                .adi(user.getAdi())
+                .email(user.getEmail())
+                .sirketkodu(user.getSirketkodu())
+                .adminmi(user.getAdminmi())
+                .yetki(user.getYetki())
+                .build());
     }
 }

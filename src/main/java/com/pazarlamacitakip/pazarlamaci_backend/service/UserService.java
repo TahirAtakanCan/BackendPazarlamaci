@@ -6,6 +6,7 @@ import com.pazarlamacitakip.pazarlamaci_backend.entity.User;
 import com.pazarlamacitakip.pazarlamaci_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,10 +17,18 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // Tüm kullanıcıları getir
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    // Şirket koduna göre kullanıcıları getir (Yönetici için)
+    public List<UserResponse> getUsersBySirketkodu(String sirketkodu) {
+        return userRepository.findBySirketkodu(sirketkodu).stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
@@ -36,7 +45,7 @@ public class UserService {
         User user = new User();
         user.setAdi(request.getAdi());
         user.setEmail(request.getEmail());
-        user.setSifre(request.getSifre()); // İleride buraya BCrypt eklenecek (JWT adımında)
+        user.setSifre(passwordEncoder.encode(request.getSifre())); // BCrypt ile şifreleme
         user.setTelefon(request.getTelefon());
         user.setYetki(request.getYetki());
         user.setBolge(request.getBolge());
