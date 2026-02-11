@@ -16,9 +16,7 @@ public class UserSaveRequest {
     private String sirketkodu;
     private String plaka;
     private String yer;
-    private String yetki;
     private String bolge;
-    private Boolean adminmi;
     private Double aylikHedef;
     private Double haftalikHedef;
     private Integer hedefZiyaretSayisi;

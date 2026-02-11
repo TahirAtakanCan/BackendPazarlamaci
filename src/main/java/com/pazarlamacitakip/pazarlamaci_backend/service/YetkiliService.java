@@ -20,6 +20,20 @@ public class YetkiliService {
     private final YetkiliRepository yetkiliRepository;
     private final FirmaRepository firmaRepository;
 
+    // Tüm yetkilileri getir (Developer için)
+    public List<YetkiliResponse> getAllYetkililer() {
+        return yetkiliRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    // Şirket koduna göre yetkilileri getir (veri izolasyonu)
+    public List<YetkiliResponse> getYetkililerBySirketkodu(String sirketkodu) {
+        return yetkiliRepository.findByFirma_Sirketkodu(sirketkodu).stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
     // Bir firmaya ait yetkilileri getir
     public List<YetkiliResponse> getYetkililerByFirmaId(UUID firmaId) {
         return yetkiliRepository.findByFirmaId(firmaId).stream()

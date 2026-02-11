@@ -6,6 +6,7 @@ import com.pazarlamacitakip.pazarlamaci_backend.dto.response.FirmaWithYoneticiRe
 import com.pazarlamacitakip.pazarlamaci_backend.dto.response.UserResponse;
 import com.pazarlamacitakip.pazarlamaci_backend.entity.Firma;
 import com.pazarlamacitakip.pazarlamaci_backend.entity.User;
+import com.pazarlamacitakip.pazarlamaci_backend.entity.UserRole;
 import com.pazarlamacitakip.pazarlamaci_backend.repository.FirmaRepository;
 import com.pazarlamacitakip.pazarlamaci_backend.repository.UserRepository;
 import com.pazarlamacitakip.pazarlamaci_backend.repository.YetkiliRepository;
@@ -31,11 +32,8 @@ public class AdminService {
      */
     @Transactional
     public FirmaWithYoneticiResponse createFirmaWithYonetici(FirmaWithYoneticiRequest request) {
-        // Sirketkodu belirle: request'ten geldiyse onu kullan, yoksa firma adından üret
-        String sirketkodu = request.getFirmaSirketkodu();
-        if (sirketkodu == null || sirketkodu.isBlank()) {
-            sirketkodu = request.getFirmaAdi().toUpperCase().replaceAll("\\s+", "_");
-        }
+        // Sirketkodu: Her zaman yeni UUID üret (benzersiz izolasyon)
+        String sirketkodu = UUID.randomUUID().toString();
 
         // Firma oluştur
         Firma firma = new Firma();
@@ -59,7 +57,7 @@ public class AdminService {
         user.setSifre(passwordEncoder.encode(request.getYoneticiSifre()));
         user.setTelefon(request.getYoneticiTelefon());
         user.setSirketkodu(sirketkodu);
-        user.setAdminmi(true); // Yönetici olarak işaretle
+        user.setRole(UserRole.ADMIN);
         user.setAktifmi(true);
         
         User savedUser = userRepository.save(user);
@@ -85,7 +83,7 @@ public class AdminService {
         userResponse.setAdi(savedUser.getAdi());
         userResponse.setEmail(savedUser.getEmail());
         userResponse.setTelefon(savedUser.getTelefon());
-        userResponse.setAdminmi(savedUser.getAdminmi());
+        userResponse.setRole(savedUser.getRole().name());
         userResponse.setAktifmi(savedUser.getAktifmi());
         userResponse.setSirketkodu(savedUser.getSirketkodu());
 

@@ -3,6 +3,7 @@ package com.pazarlamacitakip.pazarlamaci_backend.service;
 import com.pazarlamacitakip.pazarlamaci_backend.dto.request.UserSaveRequest;
 import com.pazarlamacitakip.pazarlamaci_backend.dto.response.UserResponse;
 import com.pazarlamacitakip.pazarlamaci_backend.entity.User;
+import com.pazarlamacitakip.pazarlamaci_backend.entity.UserRole;
 import com.pazarlamacitakip.pazarlamaci_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,18 +41,17 @@ public class UserService {
         return mapToResponse(user);
     }
 
-    // Kullanıcı Kaydet
+    // Kullanıcı Kaydet (Genel amaçlı - Admin kendi personelini güncellerken kullanılır)
     public UserResponse createUser(UserSaveRequest request) {
         User user = new User();
         user.setAdi(request.getAdi());
         user.setEmail(request.getEmail());
-        user.setSifre(passwordEncoder.encode(request.getSifre())); // BCrypt ile şifreleme
+        user.setSifre(passwordEncoder.encode(request.getSifre()));
         user.setTelefon(request.getTelefon());
-        user.setYetki(request.getYetki());
         user.setBolge(request.getBolge());
-        user.setAdminmi(request.getAdminmi());
         user.setSirketkodu(request.getSirketkodu());
-        // Diğer alanlar da set edilebilir...
+        user.setRole(UserRole.PERSONEL); // Varsayılan olarak personel
+        user.setAktifmi(true);
 
         User savedUser = userRepository.save(user);
         return mapToResponse(savedUser);
@@ -64,11 +64,12 @@ public class UserService {
         response.setAdi(user.getAdi());
         response.setEmail(user.getEmail());
         response.setTelefon(user.getTelefon());
-        response.setYetki(user.getYetki());
+        response.setRole(user.getRole().name());
         response.setBolge(user.getBolge());
-        response.setAdminmi(user.getAdminmi());
         response.setAktifmi(user.getAktifmi());
         response.setSirketkodu(user.getSirketkodu());
+        response.setYer(user.getYer());
+        response.setPlaka(user.getPlaka());
         return response;
     }
 

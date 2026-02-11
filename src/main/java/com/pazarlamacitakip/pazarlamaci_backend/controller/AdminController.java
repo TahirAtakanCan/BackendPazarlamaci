@@ -5,6 +5,7 @@ import com.pazarlamacitakip.pazarlamaci_backend.dto.response.FirmaWithYoneticiRe
 import com.pazarlamacitakip.pazarlamaci_backend.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -12,11 +13,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('DEVELOPER')") // Tüm admin endpointleri sadece Developer'a açık
 public class AdminController {
 
     private final AdminService adminService;
 
-    // Şirket + Yönetici birlikte oluştur
+    // Şirket + Yönetici birlikte oluştur (sadece Developer)
     @PostMapping("/firma-with-yonetici")
     public ResponseEntity<FirmaWithYoneticiResponse> createFirmaWithYonetici(
             @RequestBody FirmaWithYoneticiRequest request) {

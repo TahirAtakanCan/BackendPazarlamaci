@@ -4,7 +4,9 @@ import com.pazarlamacitakip.pazarlamaci_backend.security.jwt.JwtAuthenticationFi
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,6 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity // @PreAuthorize desteği
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -27,20 +30,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Login herkese açık
-                        .requestMatchers("/api/yetkililer/**").permitAll() // Test için açık
-                        .requestMatchers("/api/jobs/**").permitAll() // Test için açık
-                        .requestMatchers("/api/firmalar/**").permitAll() // Test için açık
-                        .requestMatchers("/api/users/**").permitAll() // Test için açık
-                        .requestMatchers("/api/task-defs/**").permitAll() // Test için açık
-                        .requestMatchers("/api/ishar/**").permitAll() // Test için açık
-                        .requestMatchers("/api/harcamalar/**").permitAll() // Test için açık
-                        .requestMatchers("/api/konum/**").permitAll() // Test için açık
-                        .requestMatchers("/api/notes/**").permitAll() // Test için açık
-                        .requestMatchers("/api/tahsilatlar/**").permitAll() // Test için açık
-                        .requestMatchers("/api/files/**").permitAll() // Dosya yükleme/indirme
-                        .requestMatchers("/api/admin/**").permitAll() // Admin/Geliştirici paneli
-                        .anyRequest().authenticated() // Diğer her yer token ister
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/hello").permitAll()
+                        .requestMatchers("/api/files/**").permitAll()
+                        // Developer-only endpoints
+                        .requestMatchers("/api/auth/create-company-admin").hasRole("DEVELOPER")
+                        .requestMatchers("/api/admin/**").hasRole("DEVELOPER")
+                        // Admin-only endpoints
+                        .requestMatchers("/api/auth/create-personnel").hasAnyRole("ADMIN", "DEVELOPER")
+                        // Authenticated endpoints (role checks in controllers via @PreAuthorize)
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

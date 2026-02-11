@@ -9,10 +9,10 @@ public class UserResponse {
     private String adi;
     private String email;
     private String telefon;
-    private String yetki;
+    private String role;
     private String bolge;
-    private Boolean adminmi;
     private Boolean aktifmi;
     private String sirketkodu;
-    // Şifre burada YOK!
+    private String yer;
+    private String plaka;
 }

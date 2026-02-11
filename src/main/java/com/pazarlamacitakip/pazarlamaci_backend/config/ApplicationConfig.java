@@ -24,8 +24,8 @@ public class ApplicationConfig {
         return username -> userRepository.findByEmail(username)
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
-                        .password(user.getSifre()) // Şifrelenmiş olmalı!
-                        .roles("USER") // İleride yetkiye göre dinamik yapacağız
+                        .password(user.getSifre())
+                        .roles(user.getRole().name()) // Dinamik rol: DEVELOPER, ADMIN, PERSONEL
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı"));
     }

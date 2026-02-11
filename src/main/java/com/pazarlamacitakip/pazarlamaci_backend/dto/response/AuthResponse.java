@@ -13,6 +13,5 @@ public class AuthResponse {
     private String adi;
     private String email;
     private String sirketkodu;
-    private Boolean adminmi;
-    private String yetki;
+    private String role;
 }

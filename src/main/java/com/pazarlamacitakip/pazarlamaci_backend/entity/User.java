@@ -29,11 +29,12 @@ public class User {
     @Column(name = "telefon")
     private String telefon;
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "adminmi")
-    private Boolean adminmi = false;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private UserRole role = UserRole.PERSONEL;
 
     @Column(name = "aktifmi")
     private Boolean aktifmi = true;
